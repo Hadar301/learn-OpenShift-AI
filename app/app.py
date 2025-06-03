@@ -35,6 +35,7 @@ input_data = pd.DataFrame([[pclass, sex, age, sibsp, parch, fare, embarked, adul
 
 # Predict
 if st.button("Predict"):
+    logger.debug(f"input data is: {input_data.to_dict()}")
     prediction = _MODEL.predict(input_data)[0]
     probability = _MODEL.predict_proba(input_data)[0]
     logger.debug(f"probability shape {probability.shape}")
