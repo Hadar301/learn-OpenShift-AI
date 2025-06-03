@@ -7,8 +7,8 @@ import os
 
 
 def load_data():
-    X_train = pd.read_csv("../data/X_train.csv")
-    y_train = pd.read_csv("../data/y_train.csv").values.ravel()
+    X_train = pd.read_csv("data/X_train.csv")
+    y_train = pd.read_csv("data/y_train.csv").values.ravel()
     logger.debug(
         f"finished loading data, data set has the shape of {X_train.shape} with labels of shape {y_train.shape}"
     )
