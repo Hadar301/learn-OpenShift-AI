@@ -4,10 +4,12 @@ import joblib
 from loguru import logger
 import random
 
+
 # Load model
 @st.cache_resource
 def load_model():
     return joblib.load("model/model.joblib")
+
 
 _MODEL = load_model()
 
@@ -30,8 +32,20 @@ embarked = embarked_map[embarked]
 adult_male = 1 if (sex == 1 and age >= 18) else 0
 is_alone = 1 if sibsp > 0 else 0
 # Create dataframe
-input_data = pd.DataFrame([[pclass, sex, age, sibsp, parch, fare, embarked, adult_male, is_alone]],
-                          columns=["pclass", "sex", "age", "sibsp", "parch", "fare", "embarked", "adult_male", "alone"])
+input_data = pd.DataFrame(
+    [[pclass, sex, age, sibsp, parch, fare, embarked, adult_male, is_alone]],
+    columns=[
+        "pclass",
+        "sex",
+        "age",
+        "sibsp",
+        "parch",
+        "fare",
+        "embarked",
+        "adult_male",
+        "alone",
+    ],
+)
 
 # Predict
 if st.button("Predict"):
