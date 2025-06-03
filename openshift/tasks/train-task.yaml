@@ -8,5 +8,5 @@ spec:
       image: python:3.10
       workingDir: /workspace/source
       script: |
-        pip install pandas scikit-learn joblib
+        pip install --no-cache-dir pandas scikit-learn joblib
         python src/train.py
