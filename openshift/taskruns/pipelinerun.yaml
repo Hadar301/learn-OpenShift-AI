@@ -8,4 +8,12 @@ spec:
   serviceAccountName: pipeline
   workspaces:
     - name: shared-workspace
-      emptyDir: {}
+      volumeClaimTemplate:
+        metadata:
+          name: shared-pvc
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

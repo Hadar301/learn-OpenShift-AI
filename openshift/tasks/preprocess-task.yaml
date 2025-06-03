@@ -9,16 +9,21 @@ spec:
     - name: git-clone
       image: alpine/git
       script: |
-        git clone https://github.com/Hadar301/learn-OpenShift-AI.git .
-      workingDir: /workspace/source       
+        git clone https://github.com/Hadar301/learn-OpenShift-AI.git learn-OpenShift-AI
+      workingDir: /workspace/source
+    - name: dir-list
+      image: python:3.11
+      workingDir: /workspace/source
+      script: |
+       echo "DEBUG: Listing contents of workspace..."
+       ls -R .
 
     - name: run-preprocess
       image: python:3.11
       workingDir: /workspace/source
       script: |
-        echo "DEBUG: Listing contents of workspace..."
-        ls -R .
+        cd learn-OpenShift-AI
         pip install --upgrade pip
         pip install --no-cache-dir pandas seaborn scikit-learn loguru
         python data/preprocess.py
-        sleep 30s
+        echo "DONE"
