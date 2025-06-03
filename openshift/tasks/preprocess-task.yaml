@@ -1,12 +1,20 @@
-apiVersion: tekton.dev/v1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: preprocess-task
 spec:
+  workspaces:
+    - name: source
   steps:
+    - name: git-clone
+      image: alpine/git
+      script: |
+        git clone https://github.com/Hadar301/learn-OpenShift-AI.git .
+      workingDir: /workspace/source
+
     - name: run-preprocess
-      image: python:3.10
+      image: python:3.11
       workingDir: /workspace/source
       script: |
-        pip install --no-cache-dir pandas seaborn scikit-learn
+        pip install --no-cache-dir pandas seaborn scikit-learn loguru
         python data/preprocess.py
