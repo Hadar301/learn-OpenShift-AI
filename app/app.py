@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 from loguru import logger
-import random
 
 
 # Load model
