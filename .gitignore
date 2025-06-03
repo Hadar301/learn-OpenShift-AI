@@ -1,6 +1,5 @@
 .venv/
 
-data/X_*
-data/y_*
+*.csv
 
 model/*
