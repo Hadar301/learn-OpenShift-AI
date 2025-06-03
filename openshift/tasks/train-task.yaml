@@ -6,15 +6,13 @@ spec:
   workspaces:
     - name: source
   steps:
-    - name: git-clone
-      image: alpine/git
-      script: |
-        git clone https://github.com/Hadar301/learn-OpenShift-AI.git .
-      workingDir: /workspace/source
 
     - name: run-train
       image: python:3.11
       workingDir: /workspace/source
       script: |
+        echo "DEBUG: Workspace contents:"
+        ls -R
+        pip install --upgrade pip
         pip install --no-cache-dir pandas seaborn scikit-learn loguru
         python src/train.py
