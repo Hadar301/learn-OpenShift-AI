@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: train-task
+spec:
+  steps:
+    - name: run-train
+      image: python:3.10
+      workingDir: /workspace/source
+      script: |
+        pip install pandas scikit-learn joblib
+        python src/train.py

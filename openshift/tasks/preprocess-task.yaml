@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: preprocess-task
+spec:
+  steps:
+    - name: run-preprocess
+      image: python:3.10
+      workingDir: /workspace/source
+      script: |
+        pip install --no-cache-dir pandas seaborn scikit-learn
+        python data/preprocess.py
