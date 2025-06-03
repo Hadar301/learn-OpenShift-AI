@@ -61,7 +61,7 @@ bash oc_apply.sh
 
 
 ## ✅ Next Steps
-Finalize and deploy a Streamlit frontend (app/) to visualize predictions
-Expose it via OpenShift Route
-Add a Tekton step to build and push the model or app image to Quay.io
-Tag and version models for reproducibility
+1. Finalize and deploy a Streamlit frontend (app/) to visualize predictions
+2. Expose it via OpenShift Route
+3. Add a Tekton step to build and push the model or app image to Quay.io
+4. Tag and version models for reproducibility
