@@ -1,0 +1,11 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: train-pipeline-run
+spec:
+  pipelineRef:
+    name: train-pipeline
+  serviceAccountName: pipeline
+  workspaces:
+    - name: shared-workspace
+      emptyDir: {}

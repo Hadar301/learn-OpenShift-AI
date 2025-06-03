@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: train-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  tasks:
+    - name: preprocess
+      taskRef:
+        name: preprocess-task
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: train
+      taskRef:
+        name: train-task
+      runAfter:
+        - preprocess
+      workspaces:
+        - name: source
+          workspace: shared-workspace
