@@ -36,5 +36,8 @@ input_data = pd.DataFrame([[pclass, sex, age, sibsp, parch, fare, embarked, adul
 # Predict
 if st.button("Predict"):
     prediction = _MODEL.predict(input_data)[0]
+    probability = _MODEL.predict_proba(input_data)[0]
+    logger.debug(f"probability shape {probability.shape}")
     result = "🟢 Survived" if prediction == 1 else "🔴 Did Not Survive"
-    st.markdown(f"### Prediction: {result}")
+    logger.info(f"Prediction: {result}, with probability of {probability[1]*100:.2f}%")
+    st.markdown(f"### Prediction: {result} - Confidence: {probability[1]*100:.2f}%")
