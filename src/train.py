@@ -7,8 +7,13 @@ import os
 
 
 def load_data():
-    X_train = pd.read_csv("data/X_train.csv")
-    y_train = pd.read_csv("data/y_train.csv").values.ravel()
+    working_dir = os.getcwd()
+    logger.debug(f"Working directory {working_dir}")
+
+    dataset_path = os.path.join(working_dir, "data/X_train.csv")
+    labels_path = os.path.join(working_dir, "data/y_train.csv")
+    X_train = pd.read_csv(dataset_path)
+    y_train = pd.read_csv(labels_path).values.ravel()
     logger.debug(
         f"finished loading data, data set has the shape of {X_train.shape} with labels of shape {y_train.shape}"
     )
