@@ -18,7 +18,7 @@ def run_inference(model, X_test):
 
 def save_predictions(predictions, probabilities, output_path="data/predictions.csv"):
     logger.debug("Saving predictions to data/predictions.csv")
-    pd.DataFrame(list(zip(predictions, probabilities)), columns=[["prediction", "probabilties"]]).to_csv(output_path, index=False)
+    pd.DataFrame(list(zip(predictions, probabilities[:,-1])), columns=[["prediction", "probabilties"]]).to_csv(output_path, index=False)
     logger.debug(f"Predictions saved to {output_path}")
 
 if __name__ == "__main__":
