@@ -11,4 +11,4 @@ EXPOSE 8501
 
 USER 1001
 
-CMD ["steamlit", "run", "app.py", "--server.port=8501", "--server.enableCORS=false"]
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.enableCORS=false"]
