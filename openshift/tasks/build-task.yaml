@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-task
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: IMAGE
+      type: string
+      description: The full image name (e.g., quay.io/hacohen/titanic-app:latest)
+  steps:
+    - name: build-image
+      image: quay.io/buildah/stable
+      workingDir: /workspace/source
+      securityContext:
+        privileged: false
+        runAsUser: 1000
+        runAsNonRoot: true
+
+      script: |
+        #!/bin/sh
+        echo "Building and pushing image to $(params.IMAGE)"
+        buildah bud -t $(params.IMAGE) .
+        buildah push $(params.IMAGE)

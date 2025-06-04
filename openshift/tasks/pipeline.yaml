@@ -3,6 +3,10 @@ kind: Pipeline
 metadata:
   name: train-pipeline
 spec:
+  params:
+    - name: fallback_deploy
+      type: string
+      default: "true"
   workspaces:
     - name: shared-workspace
   tasks:
@@ -21,3 +25,80 @@ spec:
       workspaces:
         - name: source
           workspace: shared-workspace
+
+    - name: check-diff
+      taskSpec:
+        params:
+          - name: fallback_deploy
+        results:
+          - name: should_build
+        workspaces:
+          - name: source
+        steps:
+          - name: check-diff
+            image: alpine/git
+            workingDir: /workspace/source
+            script: |
+              #!/bin/sh
+              set -eux
+
+              # Clone full history (just in case)
+              git clone --depth=10 https://github.com/Hadar301/learn-OpenShift-AI.git temp-learn-OpenShift-AI
+              cd temp-learn-OpenShift-AI
+
+              # Make sure at least two commits exist
+              if [ $(git rev-list --count HEAD) -lt 2 ]; then
+                echo "Not enough commit history, using fallback"
+                echo -n "$(params.fallback_deploy)" > $(results.should_build.path)
+                exit 0
+              fi
+
+              # Run the actual diff check
+              changed_files=$(git diff --name-only HEAD~1 HEAD || true)
+              echo "$changed_files"
+
+              echo "$changed_files" | grep -qE '(^src/|^data/|^Containerfile|^app/)' \
+                && echo -n "true" > $(results.should_build.path) \
+                || echo -n "$(params.fallback_deploy)" > $(results.should_build.path)     
+      params:
+        - name: fallback_deploy
+          value: $(params.fallback_deploy)
+      runAfter:
+        - train
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    - name: build
+      taskRef:
+        name: build-task
+      runAfter:
+        - check-diff
+      when:
+        - input: "$(tasks.check-diff.results.should_build)"
+          operator: in
+          values: ["true"]
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: quay.io/hacohen/titanic-app:latest
+
+    - name: deploy
+      taskRef:
+        name: deploy-task
+      runAfter:
+        - build
+      when:
+        - input: "$(tasks.check-diff.results.should_build)"
+          operator: in
+          values: ["true"]
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+      params:
+        - name: IMAGE
+          value: quay.io/hacohen/titanic-app:latest
+        - name: DEPLOYMENT_NAME
+          value: titanic-app

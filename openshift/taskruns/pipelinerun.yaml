@@ -6,11 +6,14 @@ spec:
   pipelineRef:
     name: train-pipeline
   serviceAccountName: pipeline
+  params:
+    - name: fallback_deploy
+      value: "true"
   workspaces:
     - name: shared-workspace
       volumeClaimTemplate:
         metadata:
-          name: shared-pvc
+          name: shared-pvc-titanic
         spec:
           accessModes:
             - ReadWriteOnce

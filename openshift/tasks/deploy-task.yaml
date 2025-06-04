@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: deploy-task
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: IMAGE
+      type: string
+      description: The image to deploy
+    - name: DEPLOYMENT_NAME
+      type: string
+      description: The name of the OpenShift deployment
+  steps:
+    - name: update-deployment
+      image: quay.io/openshift/origin-cli:latest
+      script: |
+        #!/bin/sh
+        echo "Patching deployment $(params.DEPLOYMENT_NAME) with image $(params.IMAGE)"
+        oc set image deployment/$(params.DEPLOYMENT_NAME) story-app=$(params.IMAGE) -n $PROJECT_NAMESPACE
