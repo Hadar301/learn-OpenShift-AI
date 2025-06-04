@@ -31,7 +31,7 @@ def train_model(X_train, y_train):
 
 
 def save_model(model):
-    model_dir = "model"
+    model_dir = os.path.join(os.getcwd(), "model")
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "model.joblib")
     logger.debug(f"saving model to {model_path}")
