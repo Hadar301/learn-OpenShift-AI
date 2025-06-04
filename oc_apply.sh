@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Optional - delete the pipeline
+# oc delete pipelinerun train-pipeline-run -n rh-ee-hacohen-dev  
+
 ## delete pvc
 oc get pvc --no-headers -o custom-columns=NAME:.metadata.name \
         | grep '^shared-pvc-titanic' \
