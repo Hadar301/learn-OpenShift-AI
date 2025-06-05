@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/python-311
+FROM quay.io/hacohen/python-base:3.11
 
 WORKDIR /app
 COPY app/requirements.txt .
