@@ -12,14 +12,15 @@ spec:
   steps:
     - name: build-image
       image: quay.io/buildah/stable
-      workingDir: /workspace/source
+      workingDir: /workspace/source/learn-OpenShift-AI
       securityContext:
-        privileged: false
         runAsUser: 1000
         runAsNonRoot: true
-
+      env:
+        - name: STORAGE_DRIVER
+          value: vfs
       script: |
         #!/bin/sh
         echo "Building and pushing image to $(params.IMAGE)"
-        buildah bud -t $(params.IMAGE) .
-        buildah push $(params.IMAGE)
+        buildah --storage-driver=$STORAGE_DRIVER bud -t $(params.IMAGE) .
+        buildah --storage-driver=$STORAGE_DRIVER push $(params.IMAGE)
